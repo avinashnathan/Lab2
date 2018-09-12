@@ -9,13 +9,27 @@ import edu.illinois.cs.cs125.lib.mazemaker.Maze;
  */
 @SuppressWarnings("checkstyle:emptyblock")
 public class SolveMaze {
-
+    /**
+     *
+     * @param maze maze that has wall being checked in.
+     * @return tells whether there is a wall to the right of the current position or not
+     */
+    public static boolean wallOnRight(final Maze maze) {
+        maze.turnRight();
+        boolean wall;
+        if (maze.canMove()) {
+            wall = false;
+        } else {
+            wall = true;
+        }
+        maze.turnLeft();
+        return wall;
+    }
     /**
      * Implement your maze solving algorithm in the main method below.
      *
      * @param unused unused input arguments
      */
-
     public static void main(final String[] unused) {
         /*
          * Create a new 10 x 10 maze. Feel free to change these values.
@@ -35,6 +49,19 @@ public class SolveMaze {
          */
         for (int step = 0; step < 1000; step++) {
             // Implement your maze solving algorithm here
+            if (maze.isFinished()) {
+                break;
+            }
+            if (wallOnRight(maze)) {
+                if (maze.canMove()) {
+                    maze.move();
+                } else {
+                    maze.turnLeft();
+                }
+            } else {
+                maze.turnRight();
+                maze.move();
+            }
         }
 
         if (maze.isFinished()) {
